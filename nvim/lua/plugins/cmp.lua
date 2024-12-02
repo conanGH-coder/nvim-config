@@ -1,3 +1,4 @@
+-- 安全加载插件，如果加载失败则退出
 local cmp_status_ok, cmp = pcall(require, "cmp")
 if not cmp_status_ok then
   return
@@ -8,6 +9,7 @@ if not snip_status_ok then
   return
 end
 
+-- 加载vscode样式的代码片段
 require("luasnip.loaders.from_vscode").lazy_load()
 
 -- 下面会用到这个函数
@@ -16,12 +18,31 @@ local check_backspace = function()
   return col == 0 or vim.fn.getline("."):sub(col, col):match "%s"
 end
 
+local border = {
+                { "┌", "FloatBorder" },
+                { "─", "FloatBorder" },
+                { "┐", "FloatBorder" },
+                { "│", "FloatBorder" },
+                { "┘", "FloatBorder" },
+                { "─", "FloatBorder" },
+                { "└", "FloatBorder" },
+                { "│", "FloatBorder" },
+            }
+
 
 cmp.setup({
   snippet = {
     expand = function(args)
       require('luasnip').lsp_expand(args.body)
     end,
+  },
+  window = {
+    completion = {
+      border = border,
+    },
+    documentation = {
+      border = "rounded",
+    },
   },
   mapping = cmp.mapping.preset.insert({
     ['<C-b>'] = cmp.mapping.scroll_docs(-4),
