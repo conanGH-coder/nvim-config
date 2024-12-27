@@ -18,7 +18,7 @@ require("mason-lspconfig").setup({
 })
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-local jdtls_path = "/home/conan/software/jdt-language-server-1.42.0-202410312059/bin/jdtls"
+-- local jdtls_path = "/home/conan/software/jdt-language-server-1.42.0-202410312059/bin/jdtls"
 
 require("lspconfig").lua_ls.setup {
   capabilities = capabilities,
@@ -33,12 +33,12 @@ require("lspconfig").clangd.setup {
 }
 
 require("lspconfig").jdtls.setup {
-  cmd = { jdtls_path },
-  root_dir = vim.fs.dirname(vim.fs.find({'src', 'gradlew', '.git', 'mvnw', '.vscode', '.idea'}, { upward = true })[1]),
+  -- cmd = { jdtls_path },
+  root_dir = vim.fs.dirname(vim.fs.find({'.mvn', 'src', 'gradlew', '.git', 'mvnw', '.vscode', '.idea'}, { upward = true })[1]),
   settings = {
       java = {
           project = {
-              sourcePaths = { "src" }
+              sourcePaths = { "src/main/java" }
           }
       }
   },

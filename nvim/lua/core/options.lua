@@ -35,9 +35,9 @@ opt.smartcase = true
 -- 外观
 opt.termguicolors = true
 opt.signcolumn = "yes"
-vim.cmd[[colorscheme tokyonight-moon]]
+-- vim.cmd[[colorscheme tokyonight-moon]]
 -- vim.cmd[[colorscheme catppuccin]]
--- vim.cmd[[colorscheme nightfox]]
+vim.cmd[[colorscheme nightfox]]
 -- vim.cmd[[colorscheme nordfox]]
 -- vim.cmd[[colorscheme github_dark_default]]
 
@@ -67,7 +67,7 @@ vim.api.nvim_create_autocmd("BufNewFile", {
             table.insert(lines, " * @Date: Create in " .. os.date())
             table.insert(lines, " */")
             table.insert(lines, "")
-            table.insert(lines, "")
+            -- table.insert(lines, "")
 			table.insert(lines, "public class " .. vim.fn.expand("%:r") .. " {")
 			-- table.insert(lines, "    public static void main(String[] args) {")
             -- table.insert(lines, "")
@@ -100,54 +100,54 @@ vim.api.nvim_create_autocmd("BufNewFile", {
 	end
 })
 
-local M = {}
-
-function M.get_package_name()
-    -- 获取当前文件的完整路径和文件名
-    local file_path = vim.fn.expand('%:p')
-    local file_name = vim.fn.expand('%:t')
-    -- 获取不包含文件名的路径
-    local dir_path = string.sub(file_path, 1, -(#file_name + 1))
-    -- 查找关键目录位置
-    local java_pos = string.find(dir_path, "/src/main/java")
-    local src_pos = string.find(dir_path, "src")
-    if not src_pos then
-        return nil
-    end
-    local package_path
-    if java_pos then
-        -- Maven结构: src/main/java/ 或 src/test/java/
-        package_path = string.sub(dir_path, java_pos + 12, -1)
-    else
-        -- 标准结构: src/
-        package_path = string.sub(dir_path, src_pos + 4, -1)
-    end
-    -- 将路径分隔符替换为点号
-    local package_name = string.gsub(package_path, "[\\/]", ".")
-    -- 移除开头和结尾的点号
-    package_name = string.gsub(package_name, "^%.", "")
-    package_name = string.gsub(package_name, "%.$", "")
-    return package_name
-end
-
-function M.insert_package()
-    local package_name = M.get_package_name()
-    if package_name and package_name ~= "" then
-        -- 在第一行插入包声明
-        vim.api.nvim_buf_set_lines(0, 5, 6, false, {"package " .. package_name .. ";"})
-        -- 插入空行
-        vim.api.nvim_buf_set_lines(0, 6, 7, false, {""})
-    end
-end
+-- local M = {}
+--
+-- function M.get_package_name()
+--     -- 获取当前文件的完整路径和文件名
+--     local file_path = vim.fn.expand('%:p')
+--     local file_name = vim.fn.expand('%:t')
+--     -- 获取不包含文件名的路径
+--     local dir_path = string.sub(file_path, 1, -(#file_name + 1))
+--     -- 查找关键目录位置
+--     local java_pos = string.find(dir_path, "/src/main/java")
+--     local src_pos = string.find(dir_path, "src")
+--     if not src_pos then
+--         return nil
+--     end
+--     local package_path
+--     if java_pos then
+--         -- Maven结构: src/main/java/ 或 src/test/java/
+--         package_path = string.sub(dir_path, java_pos + 12, -1)
+--     else
+--         -- 标准结构: src/
+--         package_path = string.sub(dir_path, src_pos + 4, -1)
+--     end
+--     -- 将路径分隔符替换为点号
+--     local package_name = string.gsub(package_path, "[\\/]", ".")
+--     -- 移除开头和结尾的点号
+--     package_name = string.gsub(package_name, "^%.", "")
+--     package_name = string.gsub(package_name, "%.$", "")
+--     return package_name
+-- end
+--
+-- function M.insert_package()
+--     local package_name = M.get_package_name()
+--     if package_name and package_name ~= "" then
+--         -- 在第一行插入包声明
+--         vim.api.nvim_buf_set_lines(0, 5, 6, false, {"package " .. package_name .. ";"})
+--         -- 插入空行
+--         vim.api.nvim_buf_set_lines(0, 6, 7, false, {""})
+--     end
+-- end
 
 
 vim.api.nvim_create_autocmd("BufNewFile", {
     pattern = "*",
     callback = function()
         vim.cmd("normal G")
-        if vim.fn.expand("%:e") == 'java' then
-            M.insert_package()
-        end
+        -- if vim.fn.expand("%:e") == 'java' then
+        --     M.insert_package()
+        -- end
     end
     -- callback = function()
     --     vim.cmd("normal G")
